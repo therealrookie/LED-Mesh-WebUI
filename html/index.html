@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>LED-Mesh-WebUI</title>
+</head>
+
+<body>
+	<h1>Hello World</h1>
+
+	<button id="changeTransportMode"></button>
+	<script>
+		document.getElementById("changeTransportMode").addEventListener("click", function () {
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "/setTransportMode", true);
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					console.log(xhr.responseText);
+				}
+			};
+			xhr.send(JSON.stringify({}));
+		});
+	</script>
+</body>
+
+</html>
