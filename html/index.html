@@ -10,8 +10,33 @@
 <body>
 	<h1>Hello World</h1>
 
-	<button id="changeTransportMode"></button>
+	<ul id="timelines"></ul>
+
+	<button id="changeTransportMode">Press to play first timeline</button>
 	<script>
+		window.onload = function () {
+			getTimelines();
+		}
+
+		function getTimelines() {
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "/getTimelines", true);
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					var timelines = JSON.parse(xhr.responseText).result;
+					var ul = document.getElementById("timelines");
+					ul.innerHTML = ""; // Clear existing content
+					timelines.forEach(function (timeline) {
+						var li = document.createElement("li");
+						li.textContent = timeline;
+						ul.appendChild(li);
+					});
+				}
+			};
+			xhr.send(JSON.stringify({}));
+		}
+
 		document.getElementById("changeTransportMode").addEventListener("click", function () {
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", "/setTransportMode", true);
